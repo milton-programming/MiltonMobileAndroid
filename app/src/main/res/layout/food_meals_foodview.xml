@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/good_button"
         android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="12sp"
         android:typeface="normal"
@@ -21,25 +21,6 @@
  		android:marqueeRepeatLimit="marquee_forever"
  		android:scrollHorizontally="true" />
 
-    <ImageButton
-        android:id="@+id/good_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/bad_button"
-        android:background="@color/white"
-        android:contentDescription="@string/string_Thumbs_Up"
-        android:src="@drawable/ic_action_good" />
-
-    <ImageButton
-        android:id="@+id/bad_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/ApacheTextView"
-        android:background="@color/white"
-        android:contentDescription="@string/string_Thumbs_Down"
-        android:src="@drawable/ic_action_bad" />
 
     <TextView
         android:id="@+id/ApacheTextView"

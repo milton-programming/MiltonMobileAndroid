@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:id="@+id/events_saa_fragment"
-    tools:context="edu.milton.miltonmobileandroid.activitesEvents.saa.SaaActivity.EventsFragment">
+    tools:context="edu.milton.miltonmobileandroid.events.activities.ActivitiesFragment">
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,6 +27,8 @@
         android:id="@+id/eventsList"
         android:layout_below="@+id/eventsHelper"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:divider="@color/milton_orange"
+        android:dividerHeight="2dp" />
 
 </RelativeLayout>

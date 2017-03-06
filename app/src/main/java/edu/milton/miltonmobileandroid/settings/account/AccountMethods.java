@@ -1,5 +1,6 @@
 package edu.milton.miltonmobileandroid.settings.account;
 
+import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
@@ -11,11 +12,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import java.io.IOException;
 
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+
 import edu.milton.miltonmobileandroid.R;
 import edu.milton.miltonmobileandroid.util.Callback;
 
@@ -23,18 +27,31 @@ public class AccountMethods {
 
     private static final String LOG_TAG = AccountMethods.class.getName();
 
-    public static Account getAccount(Context context) {
+    private static Account getAccount(Context context) {
         AccountManager manager = AccountManager.get(context);
         if (!isLoggedIn(context)) {
             return null;
         }
-        return manager.getAccountsByType(Consts.ACCOUNT_TYPE)[0];
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return manager.getAccountsByType(Consts.ACCOUNT_TYPE)[0];
+        }
+        return null;
     }
 
     public static boolean isLoggedIn(final Context context) {
         AccountManager manager = AccountManager.get(context);
-        int numberofaccounts = manager.getAccountsByType(Consts.ACCOUNT_TYPE).length;
-        return numberofaccounts > 0;
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+            int numberofaccounts = manager.getAccountsByType(Consts.ACCOUNT_TYPE).length;
+            return numberofaccounts > 0;
+        }
+        return false;
     }
 
     public static void login(final Context context, AccountManagerCallback<Bundle> callback) {

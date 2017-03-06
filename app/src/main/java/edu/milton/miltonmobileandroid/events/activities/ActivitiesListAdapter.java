@@ -1,5 +1,6 @@
 package edu.milton.miltonmobileandroid.events.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,13 +13,13 @@ import java.util.ArrayList;
 
 import edu.milton.miltonmobileandroid.R;
 
-public class ActivitiesListAdapter extends BaseAdapter {
+class ActivitiesListAdapter extends BaseAdapter {
 
     private Activity activity;
     private LayoutInflater inflater;
     private ArrayList<ActivitesEvent> activitesEvents;
 
-    public ActivitiesListAdapter(Activity activity, ArrayList<ActivitesEvent> activitesEvents) {
+    ActivitiesListAdapter(Activity activity, ArrayList<ActivitesEvent> activitesEvents) {
         this.activity = activity;
         this.activitesEvents = activitesEvents;
     }
@@ -38,6 +39,7 @@ public class ActivitiesListAdapter extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint({"SetTextI18n", "InflateParams"})
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 

@@ -4,7 +4,7 @@
     <string name="full_app_name">Milton Academy Students</string>
     <string name="string_Back">Back</string>
     <string name="string_Refresh">Refresh</string>
-    <string name="string_Milton_Academy">Milton Academy</string>
+    <string name="string_Milton_Academy">MA Students</string>
     <string name="string_About">About</string>
     <string name="string_Please_Wait">Please Wait</string>
     <string name="string_Error">Error</string>
@@ -31,8 +31,6 @@
 
     <!-- Meals -->
     <string name="string_Meals">Meals</string>
-    <string name="string_Thumbs_Up">Thumbs Up!</string>
-    <string name="string_Thumbs_Down">Thumbs Down!</string>
     <string name="string_Allergy_Warning">Allergy Warning</string>
     <string name="food_meals_allergy_warning">Before placing your order, please inform your server if a person in your party has a food allergy.</string>
 

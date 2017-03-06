@@ -2,12 +2,15 @@ package edu.milton.miltonmobileandroid.home;
 
 import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
-import android.app.*;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
@@ -18,18 +21,17 @@ import java.lang.reflect.Field;
 
 import android.widget.TextView;
 import edu.milton.miltonmobileandroid.R;
-import edu.milton.miltonmobileandroid.campus.doorlock.DoorLockActivity;
 import edu.milton.miltonmobileandroid.events.activities.ActivitiesFragment;
 import edu.milton.miltonmobileandroid.food.meals.MealsFragment;
+import edu.milton.miltonmobileandroid.freefinder.FinderFragment;
 import edu.milton.miltonmobileandroid.me.mailbox.MailboxFragment;
 import edu.milton.miltonmobileandroid.settings.account.AccountMethods;
 import edu.milton.miltonmobileandroid.settings.account.Consts;
 import edu.milton.miltonmobileandroid.util.Callback;
 
 
-public class HomeActivity extends Activity {
-
-    private static final String LOG_TAG = HomeActivity.class.getName();
+@SuppressWarnings( "deprecation")
+public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,26 +50,31 @@ public class HomeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
 
-        ActionBar actionBar = getActionBar();
-        actionBar.setTitle(R.string.string_Milton_Academy);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.setDisplayShowTitleEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.string_Milton_Academy);
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.addTab(actionBar.newTab()
+                    .setIcon(R.drawable.food)
+                    .setTabListener(new TabListener<MealsFragment>(this, "meals",MealsFragment.class)));
 
-        actionBar.addTab(actionBar.newTab()
-                .setText(R.string.string_Meals)
-                .setIcon(R.drawable.food)
-                .setTabListener(new TabListener<MealsFragment>(this, "meals",MealsFragment.class)));
+            actionBar.addTab(actionBar.newTab()
+                    .setIcon(R.drawable.theatre_mask)
+                    .setTabListener(new TabListener<ActivitiesFragment>(this, "activities",ActivitiesFragment.class)));
 
-        actionBar.addTab(actionBar.newTab()
-                .setText("Activities")
-                .setIcon(R.drawable.theatre_mask)
-                .setTabListener(new TabListener<ActivitiesFragment>(this, "activities",ActivitiesFragment.class)));
+            actionBar.addTab(actionBar.newTab()
+                    .setIcon(R.drawable.message)
+                    .setTabListener(new TabListener<MailboxFragment>(this,"mailbox",MailboxFragment.class)));
 
-        actionBar.addTab(actionBar.newTab()
-                .setText("Mailbox")
-                .setIcon(R.drawable.message)
-                .setTabListener(new TabListener<MailboxFragment>(this,"mailbox",MailboxFragment.class)));
+            //A WIP
+            /*
+            actionBar.addTab(actionBar.newTab()
+                    .setIcon(R.drawable.message)
+                    .setTabListener(new TabListener<FinderFragment>(this,"finder",FinderFragment.class)));
+                    */
 
+        }
     }
 
     @Override
@@ -114,8 +121,10 @@ public class HomeActivity extends Activity {
                 public void run(Bundle info) {
                     if (info.getBoolean(Consts.KEY_SUCCESS,false)) {
                         invalidateOptionsMenu();
-                        ActionBar actionBar = getActionBar();
-                        actionBar.setSelectedNavigationItem(0);
+                        ActionBar actionBar = getSupportActionBar();
+                        if (actionBar != null) {
+                            actionBar.setSelectedNavigationItem(0);
+                        }
                         AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
                         builder.setCancelable(false);
                         builder.setTitle(R.string.string_Logout);
@@ -163,31 +172,13 @@ public class HomeActivity extends Activity {
                     .setMessage(Html.fromHtml(strVersion + "<br ><br />Meals, Activities, and Mailbox Icons by <a href=\"https://icons8.com\">Icons8</a>"))
                     .create();
             d.show();
-// Make the textview clickable. Must be called after show()
             ((TextView)d.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
-
-            /*AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-            builder.setCancelable(false);
-            builder.setMessage(Html.fromHtml(strVersion + "<br /><br />" + getResources().));
-            builder.setNeutralButton(R.string.string_OK, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
-            ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());*/
-        }
-
-        if (id == R.id.action_door_lock) {
-            Intent intent = new Intent(this, DoorLockActivity.class);
-            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
     public static class TabListener<T extends Fragment> implements ActionBar.TabListener {
         private Fragment mFragment;
-        private final Activity mActivity;
+        private final AppCompatActivity mActivity;
         private final String mTag;
         private final Class<T> mClass;
 
@@ -196,7 +187,7 @@ public class HomeActivity extends Activity {
          * @param tag  The identifier tag for the fragment
          * @param clz  The fragment's Class, used to instantiate the fragment
          */
-        public TabListener(Activity activity, String tag, Class<T> clz) {
+        TabListener(AppCompatActivity activity, String tag, Class<T> clz) {
             mActivity = activity;
             mTag = tag;
             mClass = clz;

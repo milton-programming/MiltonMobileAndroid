@@ -11,12 +11,6 @@
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
 
-    <!-- Frr the DoorLock components -->
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED" />
-    <uses-feature android:name="android.hardware.bluetooth_le" android:required="false"/>
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -58,17 +52,6 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Campus -->
-        <activity
-            android:name=".campus.doorlock.DoorLockActivity"
-            android:label="@string/string_Door_Lock"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".home.HomeActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".home.HomeActivity" />
         </activity>
 
     </application>

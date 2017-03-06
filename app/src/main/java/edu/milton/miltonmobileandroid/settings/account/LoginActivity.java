@@ -6,6 +6,7 @@ import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
 import android.annotation.TargetApi;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
@@ -15,6 +16,10 @@ import android.content.Intent;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatCallback;
+import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.view.ActionMode;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -39,19 +44,21 @@ import org.jsoup.select.Elements;
 
 import edu.milton.miltonmobileandroid.R;
 
-public class LoginActivity extends AccountAuthenticatorActivity {
+public class LoginActivity extends AccountAuthenticatorActivity implements AppCompatCallback{
 
     private static final String LOG_TAG = LoginActivity.class.getName();
     private EditText usernameEditText;
     private EditText passwordEditText;
     private AccountManager manager;
+    private AppCompatDelegate mAppCompatDelegate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         manager = AccountManager.get(this);
         setContentView(R.layout.settings_login_activity);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        mAppCompatDelegate = AppCompatDelegate.create(this, this);
+        mAppCompatDelegate.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setupActionBar();
 
@@ -95,7 +102,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
     private void setupActionBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             // Show the Up button in the action bar.
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+            mAppCompatDelegate.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -237,6 +244,22 @@ public class LoginActivity extends AccountAuthenticatorActivity {
         setAccountAuthenticatorResult(answer.getExtras());
         setResult(RESULT_OK, answer);
         finish();
+    }
+
+    @Override
+    public void onSupportActionModeStarted(ActionMode mode) {
+
+    }
+
+    @Override
+    public void onSupportActionModeFinished(ActionMode mode) {
+
+    }
+
+    @Nullable
+    @Override
+    public ActionMode onWindowStartingSupportActionMode(ActionMode.Callback callback) {
+        return null;
     }
 
     public static class LoginFragment extends Fragment {

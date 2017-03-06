@@ -1,12 +1,11 @@
 package edu.milton.miltonmobileandroid.events.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.format.Time;
 import android.view.*;
 import android.widget.AdapterView;
@@ -125,7 +124,7 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
                 //display an alert dialog of the activitesEvent details with the expanded view
             }
         });
-        loadEventsForDay(year,month,day,false);
+        loadEventsForDay(year,month,day);
 
         // Gesture detection
         gestureDetector = new GestureDetector(getActivity(), new MyGestureDetector());
@@ -169,66 +168,66 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
                         case 10:
                         case 12: //31 day months
                             if (day < 31) {
-                                loadEventsForDay(year,month,day+1,false);
+                                loadEventsForDay(year,month,day+1);
                                 break;
                             }
                             //next month
                             if (month < 12) {
-                                loadEventsForDay(year,month+1,1,false); //first day of next month
+                                loadEventsForDay(year,month+1,1); //first day of next month
                                 break;
                             }
                             //next year
-                            loadEventsForDay(year+1,1,1,false); //first day of next month
+                            loadEventsForDay(year+1,1,1); //first day of next month
                             break;
                         case 4:
                         case 6:
                         case 9:
                         case 11: //30 day months
                             if (day < 30) {
-                                loadEventsForDay(year,month,day+1,false);
+                                loadEventsForDay(year,month,day+1);
                                 break;
                             }
                             //next month
                             if (month < 12) {
-                                loadEventsForDay(year,month+1,1,false); //first day of next month
+                                loadEventsForDay(year,month+1,1); //first day of next month
                                 break;
                             }
                             //next year
-                            loadEventsForDay(year+1,1,1,false); //first day of next month
+                            loadEventsForDay(year+1,1,1); //first day of next month
                             break;
                         case 2:
                             //it's february :(
                             //determine if leap year
                             if (year % 400 == 0) {
                                 if (day < 29) {
-                                    loadEventsForDay(year,month,day+1,false);
+                                    loadEventsForDay(year,month,day+1);
                                     break;
                                 }
-                                loadEventsForDay(year,month+1,1,false); //first day of next month
+                                loadEventsForDay(year,month+1,1); //first day of next month
                                 break;
                             }
                             if (year % 100 == 0 || year % 4 > 0) {
                                 //not a leap year. 28 days in month
                                 if (day < 28) {
-                                    loadEventsForDay(year,month,day+1,false);
+                                    loadEventsForDay(year,month,day+1);
                                     break;
                                 }
-                                loadEventsForDay(year,month+1,1,false); //first day of next month
+                                loadEventsForDay(year,month+1,1); //first day of next month
                                 break;
                             }
                             if (year % 4 == 0) {
                                 //a leap year. 29 days in month
                                 if (day < 29) {
-                                    loadEventsForDay(year,month,day+1,false);
+                                    loadEventsForDay(year,month,day+1);
                                     break;
                                 }
-                                loadEventsForDay(year,month+1,1,false); //first day of next month
+                                loadEventsForDay(year,month+1,1); //first day of next month
                                 break;
                             }
                     }
                 }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {//Right swipe. going backwards
                     if (day > 1) {
-                        loadEventsForDay(year,month,day-1,false);
+                        loadEventsForDay(year,month,day-1);
                         return false;
                     }
                     //ok first day of month and we're swiping. figure out the next day
@@ -241,32 +240,32 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
                         case 10:
                         case 0: //31 day months
                             if (month -1 > 0) {
-                                loadEventsForDay(year,month-1,31,false); //last day of previous month
+                                loadEventsForDay(year,month-1,31); //last day of previous month
                                 break;
                             }
-                            loadEventsForDay(year-1,12,31,false); //last day of previous year
+                            loadEventsForDay(year-1,12,31); //last day of previous year
                             break;
                         case 4:
                         case 6:
                         case 9:
                         case 11: //30 day months
-                            loadEventsForDay(year,month-1,30,false); //last day of previous month
+                            loadEventsForDay(year,month-1,30); //last day of previous month
                             break;
                         case 2:
                             //it's february :(
                             //determine if leap year
                             if (year % 400 == 0) { //29 day feb
-                                loadEventsForDay(year,month-1,29,false); //last day of previous month
+                                loadEventsForDay(year,month-1,29); //last day of previous month
                                 break;
                             }
                             if (year % 100 == 0 || year % 4 > 0) {
                                 //not a leap year. 28 days in month
-                                loadEventsForDay(year,month-1,28,false); //last day of previous month
+                                loadEventsForDay(year,month-1,28); //last day of previous month
                                 break;
                             }
                             if (year % 4 == 0) {
                                 //a leap year. 29 days in month
-                                loadEventsForDay(year,month-1,29,false); //last day of previous month
+                                loadEventsForDay(year,month-1,29); //last day of previous month
                                 break;
                             }
                     }
@@ -283,34 +282,13 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    private void loadEventsForDay(int year, int month, int day, boolean forcerefresh) {
+    private void loadEventsForDay(int year, int month, int day) {
         this.year = year;
         this.month = month;
         this.day = day;
         eventsToShow.clear();
         dateLabel.setText(month + "/" + day + "/" + year);
         adapter.notifyDataSetChanged();
-        //the logic:
-        //1. Get the all events calendar feed for the day; load from cache first if possible.
-
-        /*File cachedir = this.getCacheDir();
-        String eventscache = cachedir.getPath() + "/eventcache";
-        File eventcachedir = new File(eventscache);
-        if (!eventcachedir.exists()) {
-            eventcachedir.mkdir();
-        }
-        //now go and
-        final File thisicalfeed = new File(eventscache + "/" + year + month + day + ".ics");
-        if (!forcerefresh) {
-            //check the cache first
-            if (thisicalfeed.exists()) {
-                //make sure it is within 24 hours
-                if (thisicalfeed.lastModified() >= System.currentTimeMillis() - 1000 * 60 * 60 * 24) {
-                    populateViewFromIcal(thisicalfeed);
-                    return;
-                }
-            }
-        }*/
         if (year < 100) {
             year += 2000;
         }
@@ -349,7 +327,7 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
                             adapter.notifyDataSetChanged();
                         }
                     }
-                } catch (JSONException e) {
+                } catch (JSONException ignored) {
                 }
             }
 
@@ -379,7 +357,7 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
                         ActivitiesFragment.this.month = monthOfYear;
                         ActivitiesFragment.this.day = dayOfMonth;
 
-                        loadEventsForDay(year,monthOfYear,dayOfMonth,false);
+                        loadEventsForDay(year,monthOfYear,dayOfMonth);
 
                         //refresh with certain day
                     }
@@ -390,88 +368,5 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
 
         return super.onOptionsItemSelected(item);
     }
-    /*private void showFeedSelectionDialog() {
-
-        CharSequence[] feedLabels = new CharSequence[saaEventFeeds.size()];
-        ArrayList<Integer> feedids = new ArrayList<Integer>();
-        for (SchoolEventFeed feed : saaEventFeeds) {
-            feedLabels[saaEventFeeds.indexOf(feed)] = feed.name;
-            feedids.add(feed.id);
-        }
-
-        //now get from preferences what is checked
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String checkedfeedsS = preferences.getString("checkedEventFeeds","[]");
-        boolean[] checkedFeeds = new boolean[saaEventFeeds.size()];
-        for (int i = 0; i < checkedFeeds.length; i++) {
-            checkedFeeds[i] = false;
-        }
-
-        try {
-            JSONArray jsonArray = new JSONArray(checkedfeedsS);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                checkedFeeds[feedids.indexOf(jsonArray.getInt(i))] = true;
-            }
-
-
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        builder.setMultiChoiceItems(feedLabels,checkedFeeds, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                //look up the id of which from the order
-                SchoolEventFeed feed = saaEventFeeds.get(which);
-                final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ActivitiesFragment.this);
-                String checkedfeedsS = preferences.getString("checkedEventFeeds","[]");
-
-                try {
-                    JSONArray jsonArray = new JSONArray(checkedfeedsS);
-                    if (isChecked) {
-                        //add to array of not exists
-                        boolean exists = false;
-                        while (exists == false) {
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                if (jsonArray.getInt(i) == feed.id) {
-                                    exists = true;
-                                    break;
-                                }
-                            }
-                            if (exists == false) {
-                                jsonArray.put(feed.id);
-                            }
-                        }
-                    }
-                    else {
-                        //remove from array if exists
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            if (jsonArray.getInt(i) == feed.id) {
-                                jsonArray.remove(i);
-                            }
-                        }
-                    }
-                    preferences.edit().putString("checkedEventFeeds",jsonArray.toString()).apply();
-
-                }
-                catch(Exception e) {
-
-                }
-                //get the json from preferences
-                //add/remove this feed
-                //save the preferences
-                //now save in preferences what was checked
-            }
-        });
-        builder.create().show();
-    }*/
 
 }
